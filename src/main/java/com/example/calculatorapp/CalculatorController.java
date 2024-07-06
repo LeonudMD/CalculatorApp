@@ -24,7 +24,7 @@ public class CalculatorController {
     public void processInput(String input) {
         try {
             switch (input) {
-                case "+": // Установка оператора сложения
+                case "+": // Установка оператора сложения....
                 case "-": // Установка оператора вычитания
                 case "*": // Установка оператора умножения
                 case "/": // Установка оператора деления
