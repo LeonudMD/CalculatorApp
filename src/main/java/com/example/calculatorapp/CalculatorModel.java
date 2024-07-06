@@ -1,13 +1,20 @@
 package com.example.calculatorapp;
 
+/**
+ * Модель калькулятора, отвечающая за выполнение всех вычислений и управление состоянием калькулятора.
+ */
 public class CalculatorModel {
-    private StringBuilder currentNumber = new StringBuilder();
-    private StringBuilder currentExpression = new StringBuilder();
-    private String operator = "";
-    private double previousValue = 0;
-    private boolean clearNext = false;
-    private String errorMessage = "";
+    private StringBuilder currentNumber = new StringBuilder(); // Текущее число, введенное пользователем
+    private StringBuilder currentExpression = new StringBuilder(); // Текущее выражение, введенное пользователем
+    private String operator = ""; // Текущий оператор
+    private double previousValue = 0; // Предыдущее значение
+    private boolean clearNext = false; // Флаг, указывающий на необходимость очистки следующего числа
+    private String errorMessage = ""; // Сообщение об ошибке
 
+    /**
+     * Добавляет цифру или десятичную точку к текущему числу.
+     * @param number цифра или десятичная точка для добавления
+     */
     public void appendNumber(String number) {
         if (clearNext) {
             currentNumber.setLength(0);
@@ -23,10 +30,14 @@ public class CalculatorModel {
         currentExpression.append(number);
     }
 
+    /**
+     * Устанавливает оператор для следующего вычисления.
+     * @param operator оператор для установки
+     */
     public void setOperator(String operator) {
         try {
             if (!this.operator.isEmpty()) {
-                calculate(); // Perform the calculation if there's a pending operator
+                calculate(); // Выполняет вычисление, если есть ожидающий оператор
             } else if (currentNumber.length() > 0) {
                 previousValue = Double.parseDouble(currentNumber.toString());
             }
@@ -38,6 +49,11 @@ public class CalculatorModel {
         }
     }
 
+    /**
+     * Форматирует число в строку, убирая лишние десятичные нули.
+     * @param number число для форматирования
+     * @return отформатированное число в виде строки
+     */
     private String formatNumber(double number) {
         if (number == (long) number) {
             return String.format("%d", (long) number);
@@ -46,9 +62,13 @@ public class CalculatorModel {
         }
     }
 
+    /**
+     * Выполняет вычисление на основе текущего оператора и числа.
+     * Ваня взял для диаграммы деятельности
+     */
     public void calculate() {
         try {
-            if (operator.isEmpty()) return; // No pending operation
+            if (operator.isEmpty()) return; // Если нет ожидающей операции, выйти
 
             double currentValue = Double.parseDouble(currentNumber.toString());
             double result = previousValue;
@@ -95,7 +115,7 @@ public class CalculatorModel {
                     break;
             }
 
-            previousValue = result; // Update previousValue with the result for the next operation
+            previousValue = result; // Обновляем previousValue результатом для следующей операции
             currentNumber.setLength(0);
             currentNumber.append(formatNumber(result));
             currentExpression.append(" = ").append(formatNumber(result));
@@ -106,6 +126,9 @@ public class CalculatorModel {
         }
     }
 
+    /**
+     * Очищает все текущие значения и выражения.
+     */
     public void clear() {
         currentNumber.setLength(0);
         currentNumber.append("0");
@@ -115,6 +138,9 @@ public class CalculatorModel {
         errorMessage = "";
     }
 
+    /**
+     * Очищает текущее число.
+     */
     public void clearEntry() {
         currentNumber.setLength(0);
         currentNumber.append("0");
@@ -128,6 +154,9 @@ public class CalculatorModel {
         }
     }
 
+    /**
+     * Удаляет последний введенный символ.
+     */
     public void backspace() {
         if (currentNumber.length() > 0) {
             currentNumber.deleteCharAt(currentNumber.length() - 1);
@@ -140,6 +169,9 @@ public class CalculatorModel {
         }
     }
 
+    /**
+     * Переключает знак текущего числа.
+     */
     public void toggleSign() {
         if (currentNumber.length() > 0 && !currentNumber.toString().equals("0")) {
             if (currentNumber.charAt(0) == '-') {
@@ -157,6 +189,10 @@ public class CalculatorModel {
         }
     }
 
+    /**
+     * Возвращает текущее значение в виде строки.
+     * @return текущее значение
+     */
     public String getCurrentValue() {
         if (!errorMessage.isEmpty()) {
             return errorMessage;
@@ -164,10 +200,18 @@ public class CalculatorModel {
         return formatNumber(Double.parseDouble(currentNumber.toString()));
     }
 
+    /**
+     * Возвращает текущее выражение в виде строки.
+     * @return текущее выражение
+     */
     public String getCurrentExpression() {
         return currentExpression.toString();
     }
 
+    /**
+     * Устанавливает сообщение об ошибке и очищает текущие значения.
+     * @param message сообщение об ошибке
+     */
     public void setError(String message) {
         errorMessage = message;
         currentNumber.setLength(0);

@@ -16,7 +16,15 @@ import javafx.scene.layout.Priority;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
 
+import java.util.Objects;
+
+/**
+ * Главный класс приложения Калькулятор, наследующий Application.
+ * Этот класс отвечает за создание и настройку главного окна приложения.
+ */
 public class Main extends Application {
+
+    // Переменные для отслеживания перемещения и изменения размера окна
     private double xOffset = 0;
     private double yOffset = 0;
     private double startX = 0;
@@ -24,34 +32,53 @@ public class Main extends Application {
     private double startWidth = 0;
     private double startHeight = 0;
 
+    /**
+     * Метод start, вызываемый при запуске приложения.
+     * @param primaryStage главный Stage(сцена / окно) приложения
+     */
     @Override
     public void start(Stage primaryStage) {
-        primaryStage.initStyle(StageStyle.UNDECORATED); // Убираем стандартную панель заголовка
+        // Убираем стандартную панель заголовка окна
+        primaryStage.initStyle(StageStyle.UNDECORATED);
 
+        // Создаем представление калькулятора
         CalculatorView calculatorView = new CalculatorView();
         BorderPane root = new BorderPane();
+        // Устанавливаем пользовательскую панель заголовка
         root.setTop(createCustomTitleBar(primaryStage, calculatorView));
+        // Устанавливаем содержимое калькулятора в центр
         root.setCenter(calculatorView.createContent());
 
+        // Создаем сцену с указанными размерами
         Scene scene = new Scene(root, 400, 600);
+        // Добавляем обработчик нажатий клавиш
         scene.setOnKeyPressed(e -> calculatorView.handleKeyPress(e.getCode().toString()));
 
+        // Устанавливаем заголовок окна
         primaryStage.setTitle("Калькулятор");
-        // Установка иконки
-        primaryStage.getIcons().add(new Image(getClass().getResourceAsStream("/com/example/calculatorapp/ico_1.png")));
+        // Устанавливаем иконку окна
+        primaryStage.getIcons().add(new Image(Objects.requireNonNull(getClass().getResourceAsStream("/com/example/calculatorapp/ico_1.png"))));
+        // Устанавливаем сцену
         primaryStage.setScene(scene);
+        // Устанавливаем минимальные размеры окна
         primaryStage.setMinWidth(300);
         primaryStage.setMinHeight(485);
 
-        // Добавление слушателя для изменения размеров окна
+        // Добавляем слушатели изменения размеров окна
         primaryStage.widthProperty().addListener((obs, oldVal, newVal) -> adjustGridSize(calculatorView));
         primaryStage.heightProperty().addListener((obs, oldVal, newVal) -> adjustGridSize(calculatorView));
 
+        // Включаем возможность изменения размеров окна
         enableWindowResizing(primaryStage, root);
 
+        // Отображаем окно
         primaryStage.show();
     }
 
+    /**
+     * Метод для корректировки размеров кнопок калькулятора при изменении размеров окна.
+     * @param calculatorView представление калькулятора
+     */
     private void adjustGridSize(CalculatorView calculatorView) {
         for (Button button : calculatorView.getButtonMap().values()) {
             button.setPrefWidth(calculatorView.getBorderPane().getWidth() / 4 - 20);
@@ -59,6 +86,12 @@ public class Main extends Application {
         }
     }
 
+    /**
+     * Метод для создания пользовательской панели заголовка окна.
+     * @param stage основной Stage приложения
+     * @param calculatorView представление калькулятора
+     * @return пользовательская панель заголовка
+     */
     private HBox createCustomTitleBar(Stage stage, CalculatorView calculatorView) {
         HBox titleBar = new HBox();
         titleBar.setStyle("-fx-background-color: #202124; -fx-padding: 5;");
@@ -72,7 +105,7 @@ public class Main extends Application {
             stage.setY(event.getScreenY() - yOffset);
         });
 
-        // Добавление ярлыка с установкой размера
+        // Добавление иконки приложения
         ImageView iconView = new ImageView(new Image(getClass().getResourceAsStream("/com/example/calculatorapp/ico_1.png")));
         iconView.setFitWidth(24); // Установите ширину иконки
         iconView.setFitHeight(24); // Установите высоту иконки
@@ -99,12 +132,15 @@ public class Main extends Application {
             }
         });
 
+        // Добавление заголовка окна
         Label title = new Label("Калькулятор");
         title.setStyle("-fx-text-fill: white;");
 
+        // Создание разделителя для выравнивания кнопок справа
         HBox spacer = new HBox();
         HBox.setHgrow(spacer, Priority.ALWAYS);
 
+        // Создание кнопок управления окном (свернуть, развернуть, закрыть)
         Button minimizeButton = new Button("_");
         minimizeButton.setStyle("-fx-background-color: #555555; -fx-text-fill: white;");
         minimizeButton.setOnAction(event -> stage.setIconified(true));
@@ -117,12 +153,19 @@ public class Main extends Application {
         closeButton.setStyle("-fx-background-color: #ff5555; -fx-text-fill: white;");
         closeButton.setOnAction(event -> stage.close());
 
+        // Добавление кнопок в панель заголовка
         HBox buttons = new HBox(5, minimizeButton, maximizeButton, closeButton);
 
+        // Добавление всех элементов в панель заголовка
         titleBar.getChildren().addAll(iconLabel, title, spacer, buttons);
         return titleBar;
     }
 
+    /**
+     * Метод для включения возможности изменения размеров окна.
+     * @param stage основной Stage приложения
+     * @param root корневой элемент BorderPane
+     */
     private void enableWindowResizing(Stage stage, BorderPane root) {
         final int RESIZE_MARGIN = 10;
 
@@ -162,8 +205,11 @@ public class Main extends Application {
         });
     }
 
+    /**
+     * Главный метод запуска приложения.
+     * @param args аргументы командной строки
+     */
     public static void main(String[] args) {
         launch(args);
     }
 }
-

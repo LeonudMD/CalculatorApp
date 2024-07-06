@@ -1,0 +1,72 @@
+.root {
+    -fx-background-color: #02315E;
+}
+
+.label {
+    -fx-font-size: 36px;
+    -fx-background-color: #02315E;
+    -fx-text-fill: #f5f5f5;
+    -fx-alignment: center-right;
+    -fx-padding: 10px;
+}
+
+.current-operation-label {
+    -fx-font-size: 24px;
+    -fx-background-color: #02315E;
+    -fx-text-fill: #838686;
+    -fx-alignment: center-right;
+    -fx-padding: 5px;
+    -fx-background-radius: 15; /* Округление краев */
+    -fx-max-width: Infinity; /* На всю доступную ширину */
+}
+
+.button {
+    -fx-font-size: 18px;
+    -fx-background-color: #806491;
+    -fx-text-fill: #02315E;
+    -fx-background-radius: 10;
+}
+
+.number-button {
+    -fx-font-size: 18px;
+    -fx-background-color: #00457E;
+    -fx-text-fill: #B9848C;
+    -fx-background-radius: 10;
+}
+
+.equals-button {
+    -fx-font-size: 18px;
+    -fx-background-color: #2F70AF;
+    -fx-text-fill: #ffffff;
+    -fx-background-radius: 10;
+}
+
+.button:hover {
+    -fx-background-color: #B9848C;
+    -fx-effect: dropshadow(gaussian, #806491, 10, 0.5, 0, 0);
+}
+
+.button:pressed {
+    -fx-background-color: #806491;
+    -fx-effect: dropshadow(gaussian, #B9848C, 10, 0.5, 0, 0);
+}
+
+.number-button:hover {
+    -fx-background-color: #02315E;
+    -fx-effect: dropshadow(gaussian, #2F70AF, 10, 0.5, 0, 0);
+}
+
+.number-button:pressed {
+    -fx-background-color: #2F70AF;
+    -fx-effect: dropshadow(gaussian, #00457E, 10, 0.5, 0, 0);
+}
+
+.equals-button:hover {
+    -fx-background-color: #00457E;
+    -fx-effect: dropshadow(gaussian, #2F70AF, 10, 0.5, 0, 0);
+}
+
+.equals-button:pressed {
+    -fx-background-color: #2F70AF;
+    -fx-effect: dropshadow(gaussian, #00457E, 10, 0.5, 0, 0);
+}
